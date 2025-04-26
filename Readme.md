@@ -10,15 +10,15 @@ The synthetic data generated preserves the statistical properties of real patien
 
 ##  Objectives
 
-- ✅ Preprocess real-world healthcare data, addressing missing and inconsistent entries.
-- ✅ Train synthetic data generators using:
+- Preprocess real-world healthcare data, addressing missing and inconsistent entries.
+- Train synthetic data generators using:
   - CTGAN (Conditional Tabular GAN)
   - TVAE (Tabular Variational AutoEncoder)
   - Gaussian Copula
-- ✅ Evaluate data quality using `SDV`'s diagnostic reports.
-- ✅ Visualize distribution comparisons between real and synthetic data.
-- ✅ Train a Random Forest classifier on the synthetic data.
-- ✅ Apply SHAP (SHapley Additive exPlanations) for interpretability and feature importance analysis.
+- Evaluate data quality using `SDV`'s diagnostic reports.
+- Visualize distribution comparisons between real and synthetic data.
+- Train a Random Forest classifier on the synthetic data.
+- Apply SHAP (SHapley Additive exPlanations) for interpretability and feature importance analysis.
 
 ---
 
