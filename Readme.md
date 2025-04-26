@@ -1,6 +1,6 @@
-# 🧬 Synthetic Data Generation for Healthcare Analysis using GANs
+#  Synthetic Data Generation for Healthcare Analysis using GANs
 
-## 📝 Overview
+##  Overview
 
 This project explores the use of advanced deep learning models — specifically **Conditional GANs (CTGAN)**, **TVAE**, and **Gaussian Copula** — to generate synthetic healthcare datasets based on real COVID-19 patient records.
 
@@ -8,7 +8,7 @@ The synthetic data generated preserves the statistical properties of real patien
 
 ---
 
-## 🎯 Objectives
+##  Objectives
 
 - ✅ Preprocess real-world healthcare data, addressing missing and inconsistent entries.
 - ✅ Train synthetic data generators using:
@@ -22,7 +22,7 @@ The synthetic data generated preserves the statistical properties of real patien
 
 ---
 
-## 📂 Dataset
+##  Dataset
 
 The dataset is derived from a publicly available **COVID-19 Mexican Patient Health Record**, including:
 
@@ -34,7 +34,7 @@ The dataset is derived from a publicly available **COVID-19 Mexican Patient Heal
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 - **Python** (Pandas, NumPy, Matplotlib, Seaborn)
 - **Scikit-learn** (Random Forest Classifier)
@@ -43,7 +43,7 @@ The dataset is derived from a publicly available **COVID-19 Mexican Patient Heal
 
 ---
 
-## 📊 Results & Evaluation
+##  Results & Evaluation
 
 - All three models successfully generated statistically sound synthetic datasets.
 - CTGAN showed superior performance in mimicking the original data distribution.
@@ -51,17 +51,16 @@ The dataset is derived from a publicly available **COVID-19 Mexican Patient Heal
 
 ---
 
-## 📷 Sample Visuals
+## Sample Visuals
 
-> 📈 Real vs. Synthetic Age Distribution  
-> 📌 SHAP Summary Plot for Random Forest  
-> 📉 Evaluation Metrics: KS Test, TV, and Detection Metrics
+>  Real vs. Synthetic Age Distribution  
+>  SHAP Summary Plot for Random Forest  
+>  Evaluation Metrics: KS Test, TV, and Detection Metrics
 
-*(Add actual plots/images here if available)*
 
 ---
 
-## 🧠 Key Takeaways
+## Key Takeaways
 
 - Synthetic data can effectively replace sensitive patient records for initial model development.
 - CTGANs are particularly effective for capturing complex dependencies in tabular health data.
@@ -69,12 +68,12 @@ The dataset is derived from a publicly available **COVID-19 Mexican Patient Heal
 
 ---
 
-## 🤝 Collaboration
+## Collaboration
 
 I'm always open to feedback and potential collaboration in the intersection of **AI, healthcare, and data privacy**. Feel free to fork this repo, raise an issue, or connect with me on [LinkedIn](https://www.linkedin.com/in/parth-chopra07/).
 
 ---
 
-## 📌 License
+##  License
 
 This project is open-source and available under the MIT License.
