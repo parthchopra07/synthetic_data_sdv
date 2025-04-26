@@ -51,15 +51,6 @@ The dataset is derived from a publicly available **COVID-19 Mexican Patient Heal
 
 ---
 
-## Sample Visuals
-
->  Real vs. Synthetic Age Distribution  
->  SHAP Summary Plot for Random Forest  
->  Evaluation Metrics: KS Test, TV, and Detection Metrics
-
-
----
-
 ## Key Takeaways
 
 - Synthetic data can effectively replace sensitive patient records for initial model development.
