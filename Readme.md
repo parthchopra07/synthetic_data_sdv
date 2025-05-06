@@ -33,6 +33,8 @@ The dataset is derived from a publicly available **COVID-19 Mexican Patient Heal
 **Note:** Values such as `97` and `99` were used to represent missing data and were cleaned during preprocessing.
 
 ---
+![Frequency Distribution of continous Variable **Age** in dataset synthesized by Copula CTGAN Synthesizer](/plots/CopulaGANSynthesizer_Covid_data_AGE)
+---
 
 ##  Tech Stack
 
