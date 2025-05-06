@@ -53,8 +53,8 @@ real_data.drop(columns=["DATE_DIED"], errors='ignore', inplace=True)
 
 # Replace NaN in AGE
 real_data["AGE"] = pd.to_numeric(real_data["AGE"], errors='coerce')
-real_data["AGE"].fillna(real_data["AGE"].median(), inplace=True)
-real_data = real_data.sample(n=1000, random_state=42)
+real_data["AGE"].fillna(real_data["AGE"].mean(), inplace=True)
+real_data = real_data.sample(n=1000)
 
 # Categorical columns
 categorical_columns = [
@@ -72,6 +72,7 @@ for col in categorical_columns:
 print("\n Preview of Preprocessed Real Data:")
 print(real_data.head())
 print("Shape",real_data.shape)
+
 # %%
 # Creating Metadata for SDV Library Synthesizers
 metadata = SingleTableMetadata()
@@ -91,7 +92,7 @@ pio.renderers.default = 'browser'
 #pio.renderers.default = 'browser' 
 ctgan_synthesizer.get_loss_values()
 fig = ctgan_synthesizer.get_loss_values_plot()
-fig.update_layout(title="CTGAN Training Loss Over Epochs for Covid")
+fig.update_layout(title="Loss Curves for CTGAN model over epochs for COVID-19 Dataset")
 fig.show()
 fig.write_image(os.path.join(output_dir, "ctgan_loss_plot.png"))
 # %%
@@ -126,7 +127,7 @@ fig = get_column_plot(
     metadata=metadata,
     column_name='AGE' # Change coloumn name to visualize different coloumns
 )
-fig.update_layout(title="CTGAN data for covid AGE column")
+fig.update_layout(title="Age coloumn frequency distribution in CTGAN generated synthetic vs orignal dataset in COVID-19 dataset")
 fig.show()
 
 fig.write_image(os.path.join(output_dir, "CTGAN_data_for_covid_AGE_column.png"))
@@ -186,7 +187,7 @@ fig = get_column_plot(
     metadata=metadata,
     column_name='AGE' #Change coloumn name for different coloumns
 )
-fig.update_layout(title="TVAE Covid data AGE")
+fig.update_layout(title="Age coloumn frequency distribution in TVAE generated synthetic vs orignal dataset in COVID-19 dataset")
 fig.show()
 
 fig.write_image(os.path.join(output_dir, "TVAE_Covid_data_AGE.png"))
@@ -211,13 +212,14 @@ fig = get_column_plot(
     metadata=metadata,
     column_name='AGE' #Change coloumn name for different coloumns
 )
-fig.update_layout(title="CopulaGANSynthesizer Covid data AGE")
+fig.update_layout(title="Age coloumn frequency distribution in Copula GAN Synthesizer generated synthetic vs orignal dataset in COVID-19 dataset")
 fig.show()
 fig.write_image(os.path.join(output_dir, "CopulaGANSynthesizer_Covid_data_AGE.png"))
 # %%
 
-# Label Encoding for RandomForest
+##Training AI model(s)
 
+# Label Encoding for RandomForest
 label_encoders = {}
 for col in categorical_columns:
     le = LabelEncoder()
@@ -228,7 +230,7 @@ for col in categorical_columns:
 
 
 
-# RandomForest on CTGAN Data for demonstration SHAP
+# RandomForest on CTGAN Data for demonstration of  SHAP
 
 X_ctgan = synthetic_data_ctgan.drop(columns=["ICU"])
 y_ctgan = synthetic_data_ctgan["ICU"].astype(int)
@@ -241,7 +243,7 @@ print("\n RandomForest Model Trained for CTGAN")
 print(" Generating SHAP Summary Plot for CTGAN data...")
 explainer_ctgan = shap.Explainer(model_ctgan, X_train_ctgan)
 shap_values_ctgan = explainer_ctgan(X_test_ctgan)
-plt.title("SHAP Summary Plot – CTGAN")
+plt.title("SHAP Summary Plot – CTGAN data for COVID-19 dataset")
 shap.plots.bar(shap_values_ctgan[:, :, 1], show=False)
 plt.tight_layout()
 plt.savefig(os.path.join(output_dir,"shap_ctgan.png"))
@@ -259,11 +261,14 @@ print("\n RandomForest Model Trained for TVAE")
 print(" Generating SHAP Summary Plot for TVAE data...")
 explainer_tvae = shap.Explainer(model_tvae, X_train_tvae)
 shap_values_tvae = explainer_tvae(X_test_tvae)
-plt.title("SHAP Summary Plot – TVAE")
+plt.title("SHAP Summary Plot – TVAE data for COVID-19 dataset")
 shap.plots.bar(shap_values_tvae[:, :, 1], show=False)
 plt.tight_layout()
 plt.savefig(os.path.join(output_dir,"shap_tvae.png"))
 plt.show()
+
+# %%
+
 
 # --- Plot Comparison: Real vs CTGAN vs TVAE ---
 
@@ -280,6 +285,47 @@ def plot_numerical_distribution(column, real, ctgan, tvae):
     plt.savefig(os.path.join(output_dir,f"{column}_distribution_comparison.png"))
     plt.show()
 
+# %%
+
+def plot_categorical_distribution(column, real, ctgan, tvae):
+    # Define the mapping: 1 = 'Yes', 2 = 'No'
+    value_map = {1: 'Yes', 2: 'No'}
+
+    # Safely map values; ignore anything not in the map (e.g., 0)
+    real_mapped = real[column].map(value_map).dropna()
+    ctgan_mapped = ctgan[column].map(value_map).dropna()
+    tvae_mapped = tvae[column].map(value_map).dropna()
+
+    # Calculate normalized value counts
+    real_counts = real_mapped.value_counts(normalize=True).sort_index()
+    ctgan_counts = ctgan_mapped.value_counts(normalize=True).sort_index()
+    tvae_counts = tvae_mapped.value_counts(normalize=True).sort_index()
+
+    # Union of all categories across datasets
+    categories = sorted(set(real_counts.index) | set(ctgan_counts.index) | set(tvae_counts.index))
+
+    # Build the DataFrame for plotting
+    df_plot = pd.DataFrame({
+        "Category": categories,
+        "Real": [real_counts.get(cat, 0) for cat in categories],
+        "CTGAN": [ctgan_counts.get(cat, 0) for cat in categories],
+        "TVAE": [tvae_counts.get(cat, 0) for cat in categories]
+    })
+
+    # Melt for Seaborn
+    df_plot = pd.melt(df_plot, id_vars="Category", var_name="Dataset", value_name="Proportion")
+
+    # Plot
+    plt.figure(figsize=(8, 5))
+    sns.barplot(data=df_plot, x="Category", y="Proportion", hue="Dataset")
+    plt.title(f"Categorical Comparison: {column}")
+    plt.tight_layout()
+    plt.savefig(os.path.join(output_dir, f"{column}_categorical_comparison.png"))
+
+
+# %%
+
+'''
 def plot_categorical_distribution(column, real, ctgan, tvae):
     plt.figure(figsize=(8, 5))
     real_counts = real[column].value_counts(normalize=True).sort_index()
@@ -299,11 +345,18 @@ def plot_categorical_distribution(column, real, ctgan, tvae):
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir,f"{column}_categorical_comparison.png"))
     plt.show()
+'''
+# %%
+
 
 # Example comparisons
 plot_numerical_distribution("AGE", real_data, synthetic_data_ctgan, synthetic_data_tvae)
 plot_categorical_distribution("ICU", real_data, synthetic_data_ctgan, synthetic_data_tvae)
 plot_categorical_distribution("PREGNANT", real_data, synthetic_data_ctgan, synthetic_data_tvae)
+plot_categorical_distribution("OBESITY", real_data, synthetic_data_ctgan, synthetic_data_tvae)
+plot_categorical_distribution("COPD", real_data, synthetic_data_ctgan, synthetic_data_tvae)
+
+
 
 #Real vs Synthetic Data (Statistical Summary)
 print("\n Summary Statistics - Real Data:")
@@ -337,6 +390,16 @@ print("\nTVAE:")
 print(synthetic_data_tvae["ICU"].value_counts(normalize=True))
 print("\nCopulaGANSynthesize:")
 print(gauss_synthetic_data["ICU"].describe())
+
+print("\n OBESITY")
+print("Real:")
+print(real_data["OBESITY"].value_counts(normalize=True))
+print("\OBESITY:")
+print(synthetic_data_ctgan["OBESITY"].value_counts(normalize=True))
+print("\nTVAE:")
+print(synthetic_data_tvae["OBESITY"].value_counts(normalize=True))
+print("\nCopulaGANSynthesize:")
+print(gauss_synthetic_data["OBESITY"].describe())
 
 # %%
 
