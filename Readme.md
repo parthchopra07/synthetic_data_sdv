@@ -95,35 +95,43 @@ max       2.000000     12.000000  ...              7.000000     2.000000
 
 ### 1. CTGAN
 ![Frequency Distribution of continous Variable **Age** in dataset synthesized by CTGAN Synthesizer](plots/CTGAN_data_for_covid_AGE_column.png)
+
 **Figure 1:** Frequency Distribution of continuous Variable `Age` in the synthetic dataset synthesized by CTGAN Synthesizer for the COVID-19 dataset.
 
 ![Frequency Distribution of continous Variable **Age** in dataset synthesized by CTGAN Synthesizer](plots/CTGAN_data_AGE_Cardio.png)
+
 **Figure 2:** Frequency Distribution of continuous Variable `Age` in the synthetic dataset synthesized by CTGAN Synthesizer for the Cardiovascular Risk Factors dataset.
 
 ![Altext](plots/ctgan_loss_plot.png)
+
 **Figure 3:** Generator and discriminator loss curves of the CTGAN model over training epochs for the COVID-19 dataset. The figure illustrates the adversarial training dynamics, showing convergence behaviour and relative stability between the generator and discriminator during model training.
 
 ![Altext](plots/CTGAN_loss_values_over_epochs_for_Cardio_Data.png)
+
 **Figure 4:** Generator and discriminator loss curves of the CTGAN model over training epochs for the Cardio Dataset.
 
 ---
 ### 2. TVAE
 
 ![Altext](plots/TVAE_Covid_data_AGE.png)
+
 **Figure 5** Frequency Distribution of continuous Variable `Age` in the synthetic dataset synthesized by TVAE Synthesizer for the COVID-19 dataset.
 
 ---
 ### 3. Copula GAN Synthesizer
 ![Frequency Distribution of continous Variable **Age** in dataset synthesized by Copula GAN Synthesizer](plots/CopulaGANSynthesizer_Covid_data_AGE.png)
+
 **Figure 6:** Frequency Distribution of continuous Variable `Age` in the synthetic dataset synthesized by Copula GAN Synthesizer for the COVID-19 dataset.
 
 ---
 ### 4. SHAP values for the Random Forest Model trained on synthetic data generated from CTGAN and TVAE.
 
 ![Altext](plots/shap_ctgan.png)
+
 **Figure 7** SHAPly values for a Random Forest Model trained on CTGAN-generated synthetic data for the COVID-19 dataset.  
 
 ![Altext](plots/shap_tvae.png)
+
 **Figure 8** SHAPly values for a Random Forest Model trained on TVAE-generated synthetic data for the Cardiovascular Risk Factors dataset. 
 
 ---
@@ -131,15 +139,19 @@ max       2.000000     12.000000  ...              7.000000     2.000000
 ### 5. Categorical Variables Frequency distribution for synthetic and original datasets.
 
 ![Altext](plots/ICU_categorical_comparison.png)
+
 **Figure 9** Comparision of categorical variable `ICU` in COVID-19 dataset.
 
 ![Altext](plots/PREGNANT_categorical_comparison.png)
+
 **Figure 10** Comparision of categorical variable `PREGNANT` in COVID-19 dataset.
  
 ![Altext](plots/OBESITY_categorical_comparison.png)
+
 **Figure 11** Comparision of categorical variable `OBESITY` in COVID-19 dataset.
  
 ![Altext](plots/COPD_categorical_comparison.png)
+
 **Figure 12** Comparision of categorical variable `COPD` in COVID-19 dataset.
  
 ---
